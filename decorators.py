@@ -3,7 +3,11 @@ from datetime import datetime
 import time
 
 # Set up logging
-logging.basicConfig(# STEP 2.1: YOUR CODE HERE
+# logging.basicConfig(# STEP 2.1: YOUR CODE HERE
+#                     )
+logging.basicConfig(filename="task_manager.log",
+                    level=logging.INFO,
+                    format="%(asctime)s - %(levelname)s - %(message)s"
                     )
 
 def log_action(func):
@@ -45,5 +49,6 @@ def timer(func):
         end_time = time.time()
         total_time = end_time - start_time
         # STEP 2.3: YOUR CODE HERE
+        logging.info(f"Function '{func.__name__}' executed in {total_time:.4f} seconds.")
         return result
     return wrapper
