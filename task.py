@@ -38,6 +38,7 @@ class TaskManager:
             pass
 
     # STEP 3.1: YOUR CODE HERE
+    @log_action
     def add_task(self, name, due_date, description):
         """
         Adds a new task to the task queue.
@@ -59,6 +60,7 @@ class TaskManager:
         self.save_tasks_to_file()
 
     # STEP 3.1: YOUR CODE HERE
+    @log_action
     def view_tasks(self):
         """Display all tasks in the task queue."""
         if not self.tasks:
@@ -74,6 +76,7 @@ class TaskManager:
         
         
     # STEP 3.1: YOUR CODE HERE
+    @log_action
     def mark_complete(self, task_index):
         """Mark a task as complete."""
         if 0 <= task_index < len(self.tasks):
@@ -89,6 +92,7 @@ class TaskManager:
             print("Task not found.")
 
     # STEP 3.2: YOUR CODE HERE
+    @timer
     def save_tasks_to_file(self):
         """Save the tasks to the specified file."""
         with open(self.filename, 'w') as f:
@@ -96,7 +100,9 @@ class TaskManager:
                 f.write(f"{task['name']},{task['due_date']},{task['completed']},{task['description']}\n")
 
     # STEP 3.1: YOUR CODE HERE
+    @log_action
     # STEP 3.2: YOUR CODE HERE
+    @timer
     def save_completed_task(self, task):
         """Save the completed task to a separate file."""
         # STEP 1.5: YOUR CODE HERE
@@ -109,6 +115,7 @@ class TaskManager:
         return f"[{completed_mark}] {task['name']} (Due: {task['due_date']}) - {task['description']}"
 
     # STEP 3.1: YOUR CODE HERE
+    @log_action
     def view_next_queue_task(self):
         """View the next task in the task queue without removing it."""
         if not self.tasks:
