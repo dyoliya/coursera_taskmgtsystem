@@ -20,15 +20,22 @@ class TaskManager:
     def load_tasks(self):
         """Load tasks from the specified file."""
         # STEP 1.1: YOUR CODE HERE
-
-                    # task_name, due_date, completed, description = line.strip().split(',')
-                    # new_task = {
-                    #     "name": task_name,
-                    #     "due_date": due_date,
-                    #     "completed": completed == "True",
-                    #     "description": description
-                    # }
-                    # self.tasks.append(new_task)  # Add task to queue
+        try:
+            with open(self.filename, "r") as file:
+                for line in file:
+                    line = line.strip()
+                    if not line:
+                        continue 
+                    task_name, due_date, completed, description = line.strip().split(',')
+                    new_task = {
+                        "name": task_name,
+                        "due_date": due_date,
+                        "completed": completed == "True",
+                        "description": description
+                    }
+                    self.tasks.append(new_task)  # Add task to queue
+        except FileNotFoundError:
+            pass
 
     # STEP 3.1: YOUR CODE HERE
     def add_task(self, name, due_date, description):
@@ -41,7 +48,14 @@ class TaskManager:
             description (str): A description of the task.
         """
         # STEP 1.2: YOUR CODE HERE  
+        new_task = {
+            "name": name,
+            "due_date": due_date,
+            "completed": False,
+            "description": description
+        }
 
+        self.tasks.append(new_task)
         self.save_tasks_to_file()
 
     # STEP 3.1: YOUR CODE HERE
@@ -53,13 +67,21 @@ class TaskManager:
 
         # Print tasks in the order they were added
         # STEP 1.3: YOUR CODE HERE
-        print(task_to_string(task))
+        num_tasks = 1
+        for task in self.tasks:
+            print(self.task_to_string(task))
+            num_tasks += 1
+        
         
     # STEP 3.1: YOUR CODE HERE
     def mark_complete(self, task_index):
         """Mark a task as complete."""
         if 0 <= task_index < len(self.tasks):
             # STEP 1.4: YOUR CODE HERE
+            task = self.tasks[task_index]
+            task["completed"] = True
+            self.tasks.remove(task)
+
             self.save_completed_task(task)  # Save the completed task to a file
             self.save_tasks_to_file()
             print(f"Task '{task['name']}' marked as complete.")
@@ -78,6 +100,8 @@ class TaskManager:
     def save_completed_task(self, task):
         """Save the completed task to a separate file."""
         # STEP 1.5: YOUR CODE HERE
+        with open("completed_tasks.txt", "a") as file:
+            file.write(f"{task['name']},{task['due_date']},{task['completed']},{task['description']}\n")
 
     def task_to_string(self, task):
         """Convert a task dictionary to a string representation."""
